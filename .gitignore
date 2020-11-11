@@ -26,3 +26,7 @@ yarn-error.log*
 .firebaserc
 firebase.json
 /.firebase
+
+
+#proxy server link file
+/src/proxyServerLink.js

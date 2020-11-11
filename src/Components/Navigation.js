@@ -1,88 +1,94 @@
 import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+
+// event handler flag
+let isEventHandlerAdded = false;
 
 
 const Navigation = () => {
-    const [navIsOpen, setNavIsOpen] = useState(false);
-    const [showSubItems, setShowSubItems] = useState(false);
 
-    // handles showing/hidding navs
-    const navClick = () => {
-        if(navIsOpen === false) {
-            document.querySelector('#nav-bar-nav').style.display = 'block';
-            setNavIsOpen(true);
-        }else {
-            document.querySelector('#nav-bar-nav').style.display = 'none';
-            document.querySelector('.nav-drop-down').style.display = 'none';
-            setShowSubItems(false)
-            setNavIsOpen(false);
-        } 
-    }
-
-    // handles categories dropdown toggle
-    const showSub = () => {
-        if (showSubItems === false) {
-            document.querySelector('.nav-drop-down').style.display = 'block';
-            setShowSubItems(true)
-        }else{
-            document.querySelector('.nav-drop-down').style.display = 'none';
-            setShowSubItems(false)
+    // if the site is loaded on a tab or device of less screen size, add an event handler to each of the nav items. this handler handles collapsing the nav bar when any of the nav items is clicked
+    window.onload = () => {
+        if(window.screen.width < 992) {
+            document.querySelectorAll(".nav-item").forEach(item => {
+                item.addEventListener("click", handleNavItemClick)
+            })
+            isEventHandlerAdded = true;
         }
     }
 
 
-    // handles closing dropdown when something else is being clicked
-    // const closeDropDown = () => {
-    //     if(showSubItems) {
-    //         document.querySelector('.nav-drop-down').style.display = 'none';
-    //         setShowSubItems(false);
-    //     }
-    // }
+    // add or remove handler to/from nav items depending on the screen size
+    const onResize = () => {
+        const navItems = document.querySelectorAll(".nav-item");
+        if (window.screen.width >= 992 && isEventHandlerAdded) {
+            navItems.forEach(item => {
+                item.removeEventListener("click", handleNavItemClick)
+            })
+            document.querySelector(".nav-bar").classList.remove("nav-bar-nav-show");
+            document.querySelector('.harmburger').classList.remove('harmburger-open');
+            isEventHandlerAdded = false;
+        } else if (window.screen.width < 992 && !isEventHandlerAdded) {
+            navItems.forEach(item => {
+                item.addEventListener("click", handleNavItemClick)
+            })
+            isEventHandlerAdded = true;
+
+        }
+    }
+    // adding the onResize handler to the window  
+    window.addEventListener("resize", onResize);
+
+
+    // handles collapsing of the nav bar
+    function handleNavItemClick() {
+        document.querySelector('.nav-bar').classList.replace('nav-bar-nav-show', 'nav-bar-nav-hide');
+        document.querySelector('.harmburger').classList.remove('harmburger-open');
+        setNavIsOpen(false);
+    }
+
+    const [navIsOpen, setNavIsOpen] = useState(false);
+
+    // handles showing/hidding navs
+    const navClick = () => {
+        const nav = document.querySelector('.nav-bar').classList;
+        const harmburger = document.querySelector('.harmburger').classList;
+        if(!navIsOpen) {
+            nav.contains('nav-bar-nav-hide') ?
+            nav.replace('nav-bar-nav-hide', 'nav-bar-nav-show') :
+            nav.add('nav-bar-nav-show');
+            harmburger.add('harmburger-open');
+            setNavIsOpen(true);
+        }else {
+            nav.replace('nav-bar-nav-show', 'nav-bar-nav-hide');
+            harmburger.remove('harmburger-open');
+            setNavIsOpen(false);
+        } 
+    }
     
+
     return ( 
-        <div id = 'nav-bar'>
+        <div className = 'nav-bar'>
             <div id = 'nav-bar-brand'>
-                <h5>T-Best<span style = {{color:'#cf5c36'}}>Fashion</span></h5>
+                <h5>T-Best<span>Fashion</span></h5>
             </div>
-            <div id = 'harmburger' onClick = {navClick} >
-                <div id = 'harmburger-bar'></div>
+            <div className = 'harmburger' onClick = {navClick} >
+                <div className = 'harmburger-bar'></div>
             </div>
-            <ul id = 'nav-bar-nav'>
-                <li className = 'nav-item' onClick = {navClick}>
-                    <i className = 'fa fa-home'></i>
-                    <Link to = '/' className = 'nav-links'> HOME</Link>
-                </li>
-                <li className = 'nav-item'>
-                <i className = 'fa fa-lg fa-caret-down'></i>
-                    <span  className = 'nav-links'  onClick = {showSub}> CATEGORIES</span>
-                    <ul className = 'nav-drop-down'>
-                        <li className = 'nav-sub-item'>
-                            <Link to = '/categories/suit' className = 'nav-links' onClick = {navClick} >SUIT</Link>
-                        </li>
-                        <li className = 'nav-sub-item'>
-                            <Link to = '/categories/native wears' className = 'nav-links' onClick = {navClick} >NATIVE WEARS</Link>
-                        </li>
-                        <li className = 'nav-sub-item'>
-                            <Link to = '/categories/casuals' className = 'nav-links' onClick = {navClick} >JEANS</Link>
-                        </li>
-                        <li className = 'nav-sub-item'>
-                            <Link to = '/categories/shirts &amp; trousers' className = 'nav-links' onClick = {navClick}>SHIRTS &amp; TROUSERS</Link>
-                        </li>
-                    </ul>
-                </li>
-                <li className = 'nav-item' onClick = {navClick}>
-                <i className = 'fa fa-list'></i>
-                    <Link to = '/services' className = 'nav-links'> SERVICES</Link>
-                </li>
-                <li className = 'nav-item' onClick = {navClick}>
-                <i className = 'fa fa-info-circle'></i>
-                    <Link to = '/about' className = 'nav-links'> ABOUT</Link>
-                </li>
-                <li className = 'nav-item' onClick = {navClick}>
-                <i className = 'fa fa-phone'></i>
-                    <Link to = '/contact'className = 'nav-links'> CONTACT</Link>
-                </li>
-            </ul>
+                <ul className = 'nav-bar-nav'>
+                    <li className = 'nav-item'>
+                        <NavLink to = '/' exact className = 'nav-link' activeClassName = "active-link"><i className = 'fa fa-home'></i> HOME</NavLink>
+                    </li>
+                    <li className = 'nav-item'>
+                        <NavLink to = '/styles-gallery' className = 'nav-link' activeClassName = "active-link"><i className = 'fa fa-tshirt'></i> STYLES GALLERY</NavLink>
+                    </li>
+                    <li className = 'nav-item'>
+                        <NavLink to = '/about' className = 'nav-link' activeClassName = "active-link"><i className = 'fa fa-info-circle'></i> ABOUT</NavLink>
+                    </li>
+                    <li className = 'nav-item'>
+                        <NavLink to = '/contact'className = 'nav-link' activeClassName = "active-link"><i className = 'fa fa-phone'></i> CONTACT</NavLink>
+                    </li>
+                </ul> 
         </div>
      );
 }

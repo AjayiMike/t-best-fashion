@@ -4,26 +4,30 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image'
 
-const Testimonial = (props) => {
+const Testimonial = ({image, text, name, profession}) => {
     return ( 
         <Container id = 'card'>
             <Row>
-                <Col xs sm = {12} id = 'person'>
+                <Col xs = {12} id = 'person' className = 'd-flex justify-content-center'>
                     <Image
-                    src = {props.image}
+                    src = {image}
                     alt = 'testifier'
-                    width = '70px'
-                    height = '70px'
+                    width = '100px'
+                    height = '100px'
                     roundedCircle />
-                    <div id = 'personal-info'>
-                        <h5>{props.name}</h5>
-                        <p>{props.profession}</p>
-                    </div>
                 </Col>    
             </Row>
             <Row>
-                <Col offset = {2}>
-                    <blockquote>{props.text}</blockquote>
+                <Col>
+
+                    <blockquote>
+                        <i className = "fa fa-quote-left"></i>
+                        {text}
+                    </blockquote>
+                    <div id = 'personal-info'>
+                        <h3>{name}</h3>
+                        <p>{profession}</p>
+                    </div>
                 </Col>
             </Row>
         </Container>

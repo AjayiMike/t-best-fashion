@@ -20,10 +20,10 @@ const Footer = () => {
                 <Col xs = {6} sm = {4} id = 'contact'>
                         <h5>Contact Us</h5>
                         <p>
-                            <a href = 'mailto:tbestfashion@gmail.com' className = 'm-2'>
+                            <a href = 'mailto:officialtbestfashion@gmail.com' className = 'm-2'>
                                 <i className = 'far fa-envelope text-danger'></i>
                             </a>
-                            <a href = 'https://msng.link/o/?SirAdek=tg' className = 'm-2'>
+                            <a href = 'https://msng.link/o/?MrTbest=tg' className = 'm-2'>
                                 <i className = 'fa fa-telegram text-primary'></i>
                             </a>
                             <a href = 'https://wa.link/5eju2e' className = 'm-2'>
@@ -35,14 +35,14 @@ const Footer = () => {
                 </Col >
                 <Col xs = {6} sm = {4} id = 'copyright'>
                     <p>
-                        &copy; TBESTFashion 2020 <br />
+                       copyright &copy; 2020 TBEST fashion design <br />
                             All Right reserved
                         </p>
                 </Col>
             </Row>
             <Row>
                 <Col id = 'dev' xm = {12}>
-                <p>Made with <i className = 'fa fa-heart text-danger'></i> by Dev Adek</p>
+                <p>Made with <i className = 'fa fa-heart text-danger'></i> by Dev. Adek <a href = "https://mywa.link/aqmsuf2s"><i className = 'fa fa-whatsapp text-success'></i></a></p>
                 </Col>
             </Row>
         </Container>
